@@ -1,0 +1,51 @@
+li{
+    list-style: none;
+}
+
+.topic{
+    font-size: 40px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.container{
+    margin-left: 30px;
+}
+
+.topic_text{
+    font-size: 30px;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 1px;
+    padding-bottom:5px;
+}
+
+.pub_text{
+    font-size: 30px;
+    text-decoration: none;
+    color: black;
+}
+
+.form-label{
+    font-size: 25px;
+}
+
+.form-control{
+    font-size: 20px;
+}
+
+.formBtn{
+    text-align: right;
+}
+
+.username{
+    font-size: 30px; 
+    font-family:Microsoft JhengHei;
+    display: flex;
+}
+
+.placeholder{
+    margin-top: 30px;
+    height: 60px;
+    font-size: larger;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!--Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <title>更新事項</title>
+</head>
+<body>
+<div class="container">
+    <h2 class="topic">更新事項 / UPDATE ITEMS</h2>
+    <form class="header" th:action="@{/contents/} + *{id}" method="PUT" th:object="${billBoardObject}">
+        <input type="hidden" id="id" th:field="*{id}"/>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">主題</label>
+            <input id="topic" type="text" class="form-control" placeholder="請輸入主題" th:field="*{topic}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">起始日期</label>
+            <input id="pubdate" type="text" class="form-control" placeholder="請輸入格式yyyy-MM-dd" th:field="*{pubDate}" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">結束日期</label>
+            <input id="enddate"type="text" class="form-control" placeholder="請輸入格式yyyy-MM-dd" th:field="*{endDate}" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">發布者</label>
+            <input type="text" class="form-control" placeholder="Administrator" disabled="disabled">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">內容</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="8" th:field="*{content}"></textarea>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-10">
+                </div>
+                <div class="col-1 formBtn">
+                    <button type="button" class="btn btn-primary btn-lg addBtn" th:onclick="'javascript:updateBillBoard(this,'+*{id} +');'">更新</button>
+                </div>
+                <div class="col-1 formBtn">
+                    <a th:href="@{/contents}"><button type="button" class="btn btn-secondary btn-lg rtnBtn" >返回</button></a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--Bootstrap js-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+<script>
+    var listenId = document.getElementById("id");
+    var listenTopic = document.getElementById("topic");
+    var listenpubdate = document.getElementById("pubdate");
+    var listenenddate = document.getElementById("enddate");
+    var listenTextarea = document.getElementById("exampleFormControlTextarea1");
+    const updateBillBoard = (element,id) =>{
+        var check = confirm("確定要編輯此訊息嗎?")
+        var idValue = listenId.value;
+        var topicValue = listenTopic.value;
+        var pubdateValue = listenpubdate.value;
+        var enddateValue = listenenddate.value;
+        var textValue = listenTextarea.value;
+        if(check == true){
+            data ={id, idValue, topicValue, pubdateValue, enddateValue, textValue};
+
+            fetch('/contents/'+ id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            })
+            location.replace("/contents/");
+            }else{
+                alert("您已取消編輯");
+        }
+    }
+</script>
+</body>
+</html>

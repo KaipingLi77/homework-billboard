@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <!--Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <title>事項列表</title>
+</head>
+<body>
+<div class="container">
+    <h2 class="topic">事項列表 / TODOLIST</h2>
+    <ul>
+        <li>
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <a class="topic_text">主題</a>
+                    </div>
+                    <div class="col-2">
+                        <a class="topic_text">開始日期</a>
+                    </div>
+                    <div class="col-2">
+                        <a class="topic_text">截止日期</a>
+                    </div>
+                    <div class="col-1">
+                        <a class="topic_text">編輯</a>
+                    </div>
+                    <div class="col-1">
+                        <a class="topic_text">刪除</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+        <ul th:each="billBoard: ${billBoardList}">
+            <li>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <a th:href="@{/boardMessage/}+${billBoard.id}"><div class="alert alert-secondary" role="alert" th:text="${billBoard.topic}"></div></a>
+                        </div>
+                        <div class="col-2 pubdate">
+                            <div class="alert alert-secondary" role="alert" th:text="${billBoard.pubDate}"></div>
+                        </div>
+                        <div class="col-2 enddate">
+                            <div class="alert alert-secondary" role="alert" th:text="${billBoard.endDate}"></div>
+                        </div>
+                        <div class="col-1 editbtn">
+                            <a href="#" class="btn btn-primary btn-lg" tabindex="-1" role="button" style="font-size:smaller; margin-top: 10%;" aria-disabled="true" th:onclick="'javascript:updateContent(this,' + ${billBoard.id} + ')'">
+                                編輯
+                            </a>
+                        </div>
+                        <div class="col-1 deletebtn">
+                            <a tabindex="0" class="btn btn-lg btn-danger" role="button" data-bs-toggle="popover" data-bs-trigger="focus" style="font-size:smaller; margin-top: 10%;" itle="Dismissible popover" data-bs-content="And here's some amazing content. It's very engaging. Right?" th:onclick="'javascript:deleteContent(event,this,' + ${billBoard.id} + ')'">
+                                刪除
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+
+            </div>
+            <div class="col-2">
+                <a th:href="@{/pub}"><button type="button" class="btn btn-secondary btn-lg" style="width: 100%;">新增</button></a>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+
+<script>
+    const updateContent = (element, id) => {
+        var check = confirm("確定要編輯此訊息嗎?")
+        if(check == true){
+            location.replace("/update/"+id);
+        }            
+    }
+
+    const deleteContent = (event, element, id) => {
+        var check = confirm("確定要刪除嗎?");
+        if (check == true){
+            event.stopPropagation();
+            fetch('contents/'+ id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            }).then(function(response) {
+             element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
+            })
+        }else{
+            alert("您已取消刪除");
+        }
+    }
+</Script>
+<!--Bootstrap js-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>
+</html>
